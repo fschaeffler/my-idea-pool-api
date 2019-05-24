@@ -1,7 +1,7 @@
 {
-  "name": "serverless-aws-nodejs-yarn-webpack",
+  "name": "my-idea-pool-api",
   "version": "0.0.1",
-  "description": "Serverless Template for AWS (Node.js) with Yarn and Webpack",
+  "description": "CodementorX Small Project - Back End",
   "scripts": {
     "dep-graph": "npx madge --image docu/dependency-graph.svg src/",
     "deploy:dev": "sls deploy --stage dev",
@@ -9,14 +9,14 @@
     "lint": "npx eslint ./src; npx eslint ./test; npx eslint ./tools",
     "preinstall": "node tools/preinstall.js",
     "serve": "npx sls offline start --stage local --local --watch",
-    "test": "npm run setup-test-env; npm run mariadb-setup-tests; NODE_ENV=test nyc node_modules/.bin/mocha --recursive --require @babel/register",
+    "test": "yarn test:setup; NODE_ENV=test nyc node_modules/.bin/mocha --recursive --require @babel/register",
     "test:setup": "node -r dotenv/config test/setup/setup.js"
   },
   "author": "Florian Schaeffler <flo@schf.de> (https://aws-blog.io)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fschaeffler/serverless-aws-nodejs-webpack"
+    "url": "https://github.com/fschaeffler/my-idea-pool-api"
   },
   "engines": {
     "node": ">=8.10 <=8.11"
@@ -66,6 +66,7 @@
       "npx yarn retire -n -j",
       "npx yarn lint --fix",
       "yarn dep-graph",
+      "git add docu/dependency-graph.svg",
       "git add"
     ],
     "**/*.md": [
