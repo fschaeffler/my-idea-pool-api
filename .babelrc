@@ -1,0 +1,22 @@
+{
+  "env": {
+    "development": {
+      "sourceMaps": "inline",
+      "plugins": [
+        "source-map-support",
+        "@babel/plugin-transform-runtime"
+      ]
+    }
+  },
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
+  ]
+}
+

@@ -1,0 +1,80 @@
+{
+  "name": "serverless-aws-nodejs-yarn-webpack",
+  "version": "0.0.1",
+  "description": "Serverless Template for AWS (Node.js) with Yarn and Webpack",
+  "scripts": {
+    "dep-graph": "npx madge --image docu/dependency-graph.svg src/",
+    "deploy:dev": "sls deploy --stage dev",
+    "deploy:production": "sls deploy --stage production",
+    "lint": "npx eslint ./src; npx eslint ./test; npx eslint ./tools",
+    "preinstall": "node tools/preinstall.js",
+    "serve": "npx sls offline start --stage local --local --watch",
+    "test": "npm run setup-test-env; npm run mariadb-setup-tests; NODE_ENV=test nyc node_modules/.bin/mocha --recursive --require @babel/register",
+    "test:setup": "node -r dotenv/config test/setup/setup.js"
+  },
+  "author": "Florian Schaeffler <flo@schf.de> (https://aws-blog.io)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fschaeffler/serverless-aws-nodejs-webpack"
+  },
+  "engines": {
+    "node": ">=8.10 <=8.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-source-map-support": "^2.0.1",
+    "chai": "^4.2.0",
+    "dotenv": "^8.0.0",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-mocha": "^5.3.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.13.0",
+    "husky": "^2.2.0",
+    "lint-staged": "^8.1.6",
+    "madge": "^3.4.4",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.0",
+    "prettier": "^1.16.4",
+    "retire": "^1.6.3",
+    "serverless-offline": "^4.9.2",
+    "serverless-webpack": "^5.3.0",
+    "webpack": "^4.29.6",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.4",
+    "source-map-support": "^0.5.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "npx prettier --write",
+      "npx yarn retire -n -j",
+      "npx yarn lint --fix",
+      "yarn dep-graph",
+      "git add"
+    ],
+    "**/*.md": [
+      "npx prettier --write",
+      "git add"
+    ],
+    "**/*.yml": [
+      "npx prettier --write",
+      "git add"
+    ]
+  }
+}
