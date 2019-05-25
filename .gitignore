@@ -7,3 +7,6 @@ node_modules
 
 # Serverless configuration
 .env/env.yml
+
+# local database
+database.sqlite

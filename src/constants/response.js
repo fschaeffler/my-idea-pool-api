@@ -1,5 +1,6 @@
 export const STATUS_CODES = {
     OK: 200,
+    CREATED: 201,
     MOVED_PERMANENTLY: 301,
     MOVED_TEMPORARILY: 302,
     SEE_OTHER: 303,
@@ -11,9 +12,10 @@ export const STATUS_CODES = {
 };
 
 export const ERROR_CODES = {
-    USER_INVALID_EMAIL: 'userInvalidEmail',
-    USER_INVALID_PASSWORD: 'userInvalidPassword',
-    USER_MISSING_EMAIL: 'userMissingEmail',
-    USER_MISSING_NAME: 'userMissingName',
-    USER_MISSING_PASSWORD: 'userMissingPassword'
+    DATABASE_UNAVAILABLE: '[D1] database unavailable',
+    UNKNOWN: '[V1]: unknown validation error',
+    USER_EMAIL: '[VU1]: invalid or missing email',
+    USER_EMAIL_EXISTS: '[VU4]: email already exists',
+    USER_NAME: '[VU2]: invalid or missing name',
+    USER_PASSWORD: '[VU3]: invalid or missing password'
 };

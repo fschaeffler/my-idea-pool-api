@@ -1,75 +1,81 @@
 service: my-idea-pool-api
 
 provider:
-    name: aws
-    runtime: nodejs8.10
-    stage: ${opt:stage, 'dev'}
-    region: ${opt:region, 'eu-central-1'}
-    environment: ${file(.env/env.yml):${self:provider.stage}}
+  name: aws
+  runtime: nodejs8.10
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'eu-central-1'}
+  environment: ${file(.env/env.yml):${self:provider.stage}}
 
 custom:
-    webpack:
-        webpackConfig: webpack.config.js
-        packager: yarn
-        includeModules:
-            forceExclude:
-                - aws-sdk
-    authorizer:
-        name: src/handlers/authorizer
-        type: TOKEN
-        identitySource: method.request.header.refresh_token
-        identityValidationExpression: (^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$)
+  webpack:
+    webpackConfig: webpack.config.js
+    packager: yarn
+    includeModules:
+      forceExclude:
+        - aws-sdk
+  contentEncoding:
+    minimumCompressionSize: 0
+  authorizer:
+    name: authorizer
+    type: TOKEN
+    identitySource: method.request.header.x-access-token
+    identityValidationExpression: (^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+\/=]*$)
+    resultTtlInSeconds: 600
 
 package:
-    individually: true
+  individually: true
 
 functions:
-    userSignup:
-        handler: src/handlers/user.signup
-        events:
-            - http:
-                  path: users
-                  method: post
-    userProfile:
-        handler: src/handlers/user.getProfile
-        events:
-            - http:
-                  path: me
-                  method: get
-                  authorizer: ${self:custom.authorizer}
-    ideaCreate:
-        handler: src/handlers/idea.create
-        events:
-            - http:
-                  path: idea
-                  method: post
-                  authorizer: ${self:custom.authorizer}
-    ideaList:
-        handler: src/handlers/idea.list
-        events:
-            - http:
-                  path: idea
-                  method: get
-                  authorizer: ${self:custom.authorizer}
-                  request:
-                      parameters:
-                          querystrings:
-                              page: false
-    ideaUpdate:
-        handler: src/handlers/idea.update
-        events:
-            - http:
-                  path: idea/{id}
-                  method: put
-                  authorizer: ${self:custom.authorizer}
-    ideaRemove:
-        handler: src/handlers/idea.remove
-        events:
-            - http:
-                  path: idea/{id}
-                  method: delete
-                  authorizer: ${self:custom.authorizer}
+  authorizer:
+    handler: src/handlers/authorizer.default
+  userSignup:
+    handler: src/handlers/user.signup
+    events:
+      - http:
+          path: users
+          method: post
+  userProfile:
+    handler: src/handlers/user.profile
+    events:
+      - http:
+          path: me
+          method: get
+          authorizer: ${self:custom.authorizer}
+  ideaCreate:
+    handler: src/handlers/idea.create
+    events:
+      - http:
+          path: idea
+          method: post
+          authorizer: ${self:custom.authorizer}
+  ideaList:
+    handler: src/handlers/idea.list
+    events:
+      - http:
+          path: idea
+          method: get
+          authorizer: ${self:custom.authorizer}
+          request:
+            parameters:
+              querystrings:
+                page: false
+  ideaUpdate:
+    handler: src/handlers/idea.update
+    events:
+      - http:
+          path: idea/{id}
+          method: put
+          authorizer: ${self:custom.authorizer}
+  ideaRemove:
+    handler: src/handlers/idea.remove
+    events:
+      - http:
+          path: idea/{id}
+          method: delete
+          authorizer: ${self:custom.authorizer}
 
 plugins:
-    - serverless-offline
-    - serverless-webpack
+  - serverless-offline
+  - serverless-pseudo-parameters
+  - serverless-webpack
