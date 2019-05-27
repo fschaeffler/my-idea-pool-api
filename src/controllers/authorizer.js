@@ -1,5 +1,5 @@
-import { findOneByAccessToken } from '../repositories/accessToken';
-import database from '../database/database';
+import { STATUS_CODE_STRINGS } from '../constants/response';
+import { isValid, decode } from '../helpers/jwt';
 
 // schema based on the offical AWS documentation
 // https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
@@ -25,11 +25,22 @@ export const getAuthorizerResponse = userId => {
 };
 
 export default async event => {
-    await database();
+    const jwtToken = event.authorizationToken;
 
-    const accessToken = await findOneByAccessToken(event.authorizationToken);
+    if (!jwtToken) {
+        return Promise.reject(STATUS_CODE_STRINGS.UNAUTHORIZED);
+    }
 
-    const userId = accessToken && accessToken.userId;
+    const validationError = isValid(jwtToken);
+    if (validationError) {
+        return Promise.reject(validationError);
+    }
+
+    const { userId } = decode(jwtToken);
+
+    if (!userId) {
+        return Promise.reject(STATUS_CODE_STRINGS.UNAUTHORIZED);
+    }
 
     return getAuthorizerResponse(userId);
 };

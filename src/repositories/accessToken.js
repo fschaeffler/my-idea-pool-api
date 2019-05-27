@@ -1,36 +1,29 @@
-import moment from 'moment';
-import jsonWebToken from 'jsonwebtoken';
+import { createJwtToken } from '../helpers/jwt';
 import { AccessToken } from '../models/accessToken';
 
-export const findOneByAccessToken = async jwt =>
-    AccessToken.findOne({
-        where: {
-            jwt
-            // createdAt: {
-            //     $gt: moment().subtract(10, 'minutes').toDate()
-            // }
-        },
+export const createAccessToken = async userId => {
+    const { jwt, refreshToken } = createJwtToken({ userId });
+    await AccessToken.create({ refreshToken, userId });
+
+    return { jwt, refreshToken };
+};
+
+export const deleteByRefreshToken = async refreshToken =>
+    AccessToken.destroy({
+        where: { refreshToken }
+    });
+
+export const updateByRefreshToken = async refreshToken => {
+    const accessToken = await AccessToken.findOne({
+        where: { refreshToken },
         attributes: ['userId']
     });
 
-export const removeExpired = async () =>
-    AccessToken.destroy({
-        where: {
-            createdAt: {
-                $lte: moment()
-                    .subtract(10, 'minutes')
-                    .toDate()
-            }
-        }
-    });
+    if (!accessToken || !accessToken.userId) {
+        return null;
+    }
 
-export const createAccessToken = async userId => {
-    const jwt = jsonWebToken.sign({ userId }, process.env.APP_SECRET, {
-        expiresIn: 10 * 60
-    });
-    const refreshToken = `TODO: implement refreshToken (${userId} / ${new Date()})`;
+    const { jwt } = createJwtToken({ userId: accessToken.userId });
 
-    await AccessToken.create({ jwt, refreshToken, userId });
-
-    return { jwt, refreshToken };
+    return jwt;
 };

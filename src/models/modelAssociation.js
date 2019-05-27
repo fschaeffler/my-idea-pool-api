@@ -10,14 +10,21 @@ export default () => {
         onUpdate: 'NO ACTION'
     });
 
-    User.hasMany(Idea, {
+    User.hasMany(AccessToken, {
         foreignKey: 'userId',
         targetKey: 'id',
         onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
 
-    User.hasMany(AccessToken, {
+    Idea.belongsTo(User, {
+        foreignKey: 'userId',
+        targetKey: 'id',
+        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION'
+    });
+
+    User.hasMany(Idea, {
         foreignKey: 'userId',
         targetKey: 'id',
         onDelete: 'CASCADE',

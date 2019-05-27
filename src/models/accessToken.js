@@ -5,16 +5,11 @@ export let AccessToken;
 
 const initAccessToken = sequelize => {
     AccessToken = sequelize.define('AccessToken', {
-        jwt: {
+        refreshToken: {
             type: Sequelize.STRING,
             allowNull: false,
             unique: true,
             index: true
-        },
-        refreshToken: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
         }
     });
 };

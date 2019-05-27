@@ -1,5 +1,4 @@
 import { User } from '../models/user';
-import { AccessToken } from '../models/accessToken';
 
 export const createUser = user => User.create(user);
 
@@ -9,10 +8,13 @@ export const findOneByEmail = email =>
         attributes: ['id']
     });
 
-export const findOneByAccessToken = jwt =>
+export const findOneById = userId =>
     User.findOne({
-        include: {
-            model: AccessToken,
-            where: { jwt }
-        }
+        where: { id: userId }
+    });
+
+export const findOneByEmailAndPasswordHash = (email, passwordHash) =>
+    User.findOne({
+        where: { email, passwordHash },
+        attributes: ['id']
     });

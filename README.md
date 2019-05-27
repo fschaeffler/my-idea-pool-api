@@ -16,6 +16,8 @@
 
 -   Don't send cleartext passwords to the API. In order to fix this, the client needs to hash its password locally and then send the hash and not the password itself to the API.
 
+-   On a logout destroy all sessions and not only the current one.
+
 ### Data Privacy
 
 -   In order to comply with data privacy matters, there should always be a self-deletion process for the user. This would need an API-endpoint for self-deleting an authorized user.

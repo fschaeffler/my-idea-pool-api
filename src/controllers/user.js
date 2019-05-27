@@ -2,14 +2,11 @@ import * as _ from 'underscore';
 import gravatar from '../services/gravatar';
 import isValid from '../validations/user';
 import { createAccessToken } from '../repositories/accessToken';
-import {
-    createUser,
-    findOneByAccessToken,
-    findOneByEmail
-} from '../repositories/user';
+import { createUser, findOneById, findOneByEmail } from '../repositories/user';
 import { getPasswordHash } from '../helpers/crypto';
 import { STATUS_CODES, ERROR_CODES } from '../constants/response';
 import { toResponse } from '../helpers/format';
+import { decode } from '../helpers/jwt';
 
 export const signupUser = async event => {
     if (!event || !event.body) {
@@ -57,7 +54,8 @@ export const signupUser = async event => {
 
 export const getProfile = async event => {
     const accessToken = event.headers['x-access-token'];
-    const user = await findOneByAccessToken(accessToken);
+    const { userId } = decode(accessToken);
+    const user = await findOneById(userId);
 
     return {
         statusCode: STATUS_CODES.OK,

@@ -6,7 +6,7 @@ export let Idea;
 const initIdea = sequelize => {
     Idea = sequelize.define('Idea', {
         content: {
-            type: Sequelize.STRING,
+            type: Sequelize.TEXT,
             allowNull: false
         },
         impact: {

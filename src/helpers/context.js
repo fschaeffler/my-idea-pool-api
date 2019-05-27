@@ -3,7 +3,7 @@ import { LOG_LEVELS } from '../constants/constants';
 import { STATUS_CODES } from '../constants/response';
 import database from '../database/database';
 
-export default async (event, context, exec) => {
+export default async (event, context, exec, rethrowError) => {
     try {
         /* eslint-disable-next-line no-param-reassign */
         context.callbackWaitsForEmptyEventLoop = false;
@@ -13,6 +13,10 @@ export default async (event, context, exec) => {
 
         return result;
     } catch (error) {
+        if (rethrowError) {
+            return Promise.reject(error);
+        }
+
         log(`request failed: ${error}`, LOG_LEVELS.ERROR);
 
         return {

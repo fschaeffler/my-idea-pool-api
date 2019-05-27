@@ -29,6 +29,26 @@ package:
 functions:
   authorizer:
     handler: src/handlers/authorizer.default
+  accessTokenLogin:
+    handler: src/handlers/accessToken.login
+    events:
+      - http:
+          path: access-tokens
+          method: post
+  accessTokenLogout:
+    handler: src/handlers/accessToken.logout
+    events:
+      - http:
+          path: access-tokens
+          method: delete
+          authorizer: ${self:custom.authorizer}
+  accessTokenRefresh:
+    handler: src/handlers/accessToken.refresh
+    events:
+      - http:
+          path: access-tokens/refresh
+          method: post
+          authorizer: ${self:custom.authorizer}
   userSignup:
     handler: src/handlers/user.signup
     events:
