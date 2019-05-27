@@ -6,7 +6,7 @@ import { createUser, findOneById, findOneByEmail } from '../repositories/user';
 import { getPasswordHash } from '../helpers/crypto';
 import { STATUS_CODES, ERROR_CODES } from '../constants/response';
 import { toResponse } from '../helpers/format';
-import { decode } from '../helpers/jwt';
+import { getUserId } from '../helpers/jwt';
 
 export const signupUser = async event => {
     if (!event || !event.body) {
@@ -53,8 +53,7 @@ export const signupUser = async event => {
 };
 
 export const getProfile = async event => {
-    const accessToken = event.headers['x-access-token'];
-    const { userId } = decode(accessToken);
+    const userId = getUserId(event);
     const user = await findOneById(userId);
 
     return {

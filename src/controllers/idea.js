@@ -2,7 +2,7 @@ import * as _ from 'underscore';
 import isValid from '../validations/idea';
 import { toResponse } from '../helpers/format';
 import { STATUS_CODES } from '../constants/response';
-import { decode } from '../helpers/jwt';
+import { getUserId } from '../helpers/jwt';
 
 import {
     createIdea as createIdeaRepo,
@@ -40,8 +40,7 @@ export const createIdea = async event => {
         };
     }
 
-    const accessToken = event.headers['x-access-token'];
-    const { userId } = decode(accessToken);
+    const userId = getUserId(event);
 
     if (!userId) {
         return {
@@ -65,8 +64,7 @@ export const createIdea = async event => {
 
 export const removeIdea = async event => {
     const ideaId = event.pathParameters.id;
-    const accessToken = event.headers['x-access-token'];
-    const { userId } = decode(accessToken);
+    const userId = getUserId(event);
 
     if (!userId) {
         return {
@@ -88,8 +86,7 @@ export const removeIdea = async event => {
 };
 
 export const listIdeas = async event => {
-    const accessToken = event.headers['x-access-token'];
-    const { userId } = decode(accessToken);
+    const userId = getUserId(event);
 
     const page = Math.max(
         1,
@@ -129,8 +126,7 @@ export const updateIdea = async event => {
         };
     }
 
-    const accessToken = event.headers['x-access-token'];
-    const { userId } = decode(accessToken);
+    const userId = getUserId(event);
 
     if (!userId) {
         return {

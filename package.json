@@ -61,6 +61,7 @@
     "complexity": "^0.0.6",
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
+    "lowercase-keys": "^2.0.0",
     "moment": "^2.24.0",
     "mysql2": "^1.6.5",
     "rand-token": "^0.4.0",
