@@ -1,16 +1,14 @@
 import jwt from 'jsonwebtoken';
-import randToken from 'rand-token';
 import { STATUS_CODE_STRINGS } from '../constants/response';
 import { toLowerCase } from './format';
+import { randomUid } from './crypto';
 
 export const createJwtToken = payload => ({
     jwt: jwt.sign(payload, process.env.APP_SECRET, { expiresIn: 10 * 60 }),
-    refreshToken: randToken.uid(256)
+    refreshToken: randomUid(256)
 });
 
-export const decode = token => jwt.decode(token);
-
-export const isValid = token => {
+export const isInvalid = token => {
     try {
         jwt.verify(token, process.env.APP_SECRET);
     } catch (error) {
@@ -24,6 +22,8 @@ export const isValid = token => {
     return null;
 };
 
+export const decode = token => jwt.decode(token);
+
 export const getUserId = event => {
     if (!event || !event.headers) {
         return null;
@@ -35,5 +35,6 @@ export const getUserId = event => {
         return null;
     }
 
-    return decode(accessToken).userId;
+    const payload = !isInvalid(accessToken) && decode(accessToken);
+    return (payload && payload.userId) || null;
 };

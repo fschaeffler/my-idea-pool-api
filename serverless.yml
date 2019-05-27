@@ -5,7 +5,20 @@ provider:
   runtime: nodejs8.10
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-central-1'}
-  environment: ${file(.env/env.yml):${self:provider.stage}}
+  environment: ${file(./.env/env.yml):${self:provider.stage}}
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'lambda:InvokeFunction'
+      Resource:
+      - Fn::Join:
+        - ':'
+        - - arn:aws:lambda
+          - Ref: AWS::Region
+          - Ref: AWS::AccountId
+          - function:${self:service}-${opt:stage, self:provider.stage}-*
+  # needs to get enabled for AWS RDS databases without public internet access
+  vpc: ${file(./.env/env.yml):vpc}
 
 custom:
   webpack:
@@ -14,8 +27,12 @@ custom:
     includeModules:
       forceExclude:
         - aws-sdk
+        - sqlite3
   contentEncoding:
     minimumCompressionSize: 0
+  warmup:
+    default: true
+    prewarm: true
   authorizer:
     name: authorizer
     type: TOKEN
@@ -24,7 +41,7 @@ custom:
     resultTtlInSeconds: 600
 
 package:
-  individually: true
+  individually: false
 
 functions:
   authorizer:
@@ -98,4 +115,5 @@ functions:
 plugins:
   - serverless-offline
   - serverless-pseudo-parameters
+  - serverless-plugin-warmup
   - serverless-webpack

@@ -1,0 +1,19 @@
+{
+    "extends": ["airbnb/base", "prettier"],
+    "plugins": ["promise", "mocha"],
+    "env": {
+        "mocha": true
+    },
+    "rules": {
+        "one-var": "off",
+        "no-underscore-dangle": "off",
+        "no-unused-vars": "warn",
+        "react/destructuring-assignment": "off",
+        "no-console": "off",
+
+        // Check this link for not using arrow functions on mocha
+        // https://mochajs.org/#arrow-functions
+
+        "func-names": "off"
+    }
+}

@@ -1,5 +1,5 @@
 import { STATUS_CODE_STRINGS } from '../constants/response';
-import { isValid, decode } from '../helpers/jwt';
+import { isInvalid, decode } from '../helpers/jwt';
 
 // schema based on the offical AWS documentation
 // https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
@@ -31,7 +31,7 @@ export default async event => {
         return Promise.reject(STATUS_CODE_STRINGS.UNAUTHORIZED);
     }
 
-    const validationError = isValid(jwtToken);
+    const validationError = isInvalid(jwtToken);
     if (validationError) {
         return Promise.reject(validationError);
     }

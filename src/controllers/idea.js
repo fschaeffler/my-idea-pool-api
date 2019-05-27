@@ -58,7 +58,7 @@ export const createIdea = async event => {
 
     return {
         statusCode: STATUS_CODES.CREATED,
-        body: toResponse(transformIdeaFormat(idea))
+        body: toResponse(transformIdeaFormat(idea), ['averageScore'])
     };
 };
 
@@ -103,7 +103,10 @@ export const listIdeas = async event => {
 
     return {
         statusCode: STATUS_CODES.OK,
-        body: toResponse(_.map(ideas || [], idea => transformIdeaFormat(idea)))
+        body: toResponse(
+            _.map(ideas || [], idea => transformIdeaFormat(idea)),
+            ['averageScore']
+        )
     };
 };
 
@@ -144,6 +147,6 @@ export const updateIdea = async event => {
 
     return {
         statusCode: STATUS_CODES.CREATED,
-        body: toResponse(transformIdeaFormat(updatedIdea))
+        body: toResponse(transformIdeaFormat(updatedIdea), ['averageScore'])
     };
 };

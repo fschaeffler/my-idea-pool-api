@@ -1,3 +1,5 @@
+import randToken from 'rand-token';
+
 const crypto = require('crypto');
 
 const hash = input =>
@@ -11,3 +13,5 @@ export const getPasswordHash = password =>
 
 export const isPasswordMatch = (password, passwordHash) =>
     hash(`${password}${process.env.APP_SECRET}`) === passwordHash;
+
+export const randomUid = (length = 256) => randToken.uid(length).toLowerCase();

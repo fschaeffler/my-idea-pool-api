@@ -4,7 +4,10 @@ export default (message, logLevel = LOG_LEVELS.INFO) => {
     /* eslint-disable no-console */
 
     if (logLevel === LOG_LEVELS.INFO) {
-        console.log(`[INFO]: ${message}`);
+        if (process.env.DEBUG === true || process.env.DEBUG === 'true') {
+            console.log(`[INFO]: ${message}`);
+        }
+
         return;
     }
 

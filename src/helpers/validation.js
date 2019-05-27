@@ -2,7 +2,7 @@ import joi from '@hapi/joi';
 import * as _ from 'underscore';
 import { ERROR_CODES } from '../constants/response';
 
-export default (input, schema, errorMap) => {
+export default (input, schema, errorMap = []) => {
     const validation = joi.validate(input, schema);
     const errors = [];
 

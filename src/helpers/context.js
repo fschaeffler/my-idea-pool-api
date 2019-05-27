@@ -1,5 +1,5 @@
 import log from './logging';
-import { LOG_LEVELS } from '../constants/constants';
+import { LOG_LEVELS, WARMUP_EVENT_SOURCE } from '../constants/constants';
 import { STATUS_CODES } from '../constants/response';
 import database from '../database/database';
 
@@ -7,6 +7,10 @@ export default async (event, context, exec, rethrowError) => {
     try {
         /* eslint-disable-next-line no-param-reassign */
         context.callbackWaitsForEmptyEventLoop = false;
+
+        if (event && event.source === WARMUP_EVENT_SOURCE) {
+            return WARMUP_EVENT_SOURCE;
+        }
 
         await database();
         const result = await exec();

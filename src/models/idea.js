@@ -10,19 +10,19 @@ const initIdea = sequelize => {
             allowNull: false
         },
         impact: {
-            type: Sequelize.NUMBER,
+            type: Sequelize.INTEGER,
             allowNull: false
         },
         ease: {
-            type: Sequelize.NUMBER,
+            type: Sequelize.INTEGER,
             allowNull: false
         },
         confidence: {
-            type: Sequelize.NUMBER,
+            type: Sequelize.INTEGER,
             allowNull: false
         },
         averageScore: {
-            type: Sequelize.DECIMAL,
+            type: Sequelize.FLOAT,
             allowNull: false
         }
     });

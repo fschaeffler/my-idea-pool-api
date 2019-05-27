@@ -25,7 +25,7 @@ export const listIdeas = async (
         where: { userId },
         attributes: { exclude: ['updatedAt', 'userId'] },
         order: [['updatedAt', 'DESC']],
-        offset: page * pagination,
+        offset: Math.max(0, (page - 1) * pagination),
         limit: pagination
     });
 

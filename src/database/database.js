@@ -1,5 +1,6 @@
 /* eslint-disable import/no-mutable-exports */
 import Sequelize from 'sequelize';
+import mysql2 from 'mysql2';
 import initModels from '../models/modelInit';
 import initAssociations from '../models/modelAssociation';
 import log from '../helpers/logging';
@@ -21,6 +22,7 @@ const getProductionConnection = () =>
         process.env.DB_PASS,
         {
             dialect: 'mysql',
+            dialectModule: mysql2,
             host: process.env.DB_HOST,
             port: process.env.DB_PORT,
             ...baseDbSettings
@@ -50,6 +52,9 @@ const database = async () => {
         await initAssociations();
         log('=> associations initialized');
 
+        // the { force: true } will recreate the database schema, even if
+        // that means dropping content
+        // await sequelize.sync({ force: true });
         await sequelize.sync();
         log('=> database models synced');
     }
