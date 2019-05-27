@@ -66,14 +66,14 @@ functions:
     handler: src/handlers/idea.create
     events:
       - http:
-          path: idea
+          path: ideas
           method: post
           authorizer: ${self:custom.authorizer}
   ideaList:
     handler: src/handlers/idea.list
     events:
       - http:
-          path: idea
+          path: ideas
           method: get
           authorizer: ${self:custom.authorizer}
           request:
@@ -84,14 +84,14 @@ functions:
     handler: src/handlers/idea.update
     events:
       - http:
-          path: idea/{id}
+          path: ideas/{id}
           method: put
           authorizer: ${self:custom.authorizer}
   ideaRemove:
     handler: src/handlers/idea.remove
     events:
       - http:
-          path: idea/{id}
+          path: ideas/{id}
           method: delete
           authorizer: ${self:custom.authorizer}
 

@@ -7,3 +7,5 @@ export const LOG_LEVELS = {
     WARN: 'warn',
     ERROR: 'error'
 };
+
+export const DEFAULT_PAGINATION = 10;

@@ -23,5 +23,9 @@ export const ERROR_CODES = {
     USER_EMAIL: '[VU1]: invalid or missing email',
     USER_EMAIL_EXISTS: '[VU4]: email already exists',
     USER_NAME: '[VU2]: invalid or missing name',
-    USER_PASSWORD: '[VU3]: invalid or missing password'
+    USER_PASSWORD: '[VU3]: invalid or missing password',
+    IDEA_CONTENT: '[I1]: invalid or missing content',
+    IDEA_IMPACT: '[I2]: invalid or missing impact',
+    IDEA_EASE: '[I3]: invalid or missing ease',
+    IDEA_CONFIDENCE: '[I4]: invalid or missing confidence'
 };

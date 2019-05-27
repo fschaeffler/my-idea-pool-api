@@ -1,7 +1,7 @@
 import joi from '@hapi/joi';
 import complexity from 'complexity';
-import * as _ from 'underscore';
 import { ERROR_CODES } from '../constants/response';
+import validate from '../helpers/validation';
 
 const ERROR_MAP = {
     email: ERROR_CODES.USER_EMAIL,
@@ -33,17 +33,4 @@ const schema = joi.object().keys({
         .required()
 });
 
-export default input => {
-    const validation = joi.validate(input, schema);
-    const errors = [];
-
-    if (validation.error && validation.error.details) {
-        _.forEach(validation.error.details, details => {
-            const fieldName = details.message.split('"')[1];
-            const fieldError = ERROR_MAP[fieldName] || ERROR_CODES.UNKNOWN;
-            errors.push(fieldError);
-        });
-    }
-
-    return errors.length ? _.unique(errors).join('; ') : null;
-};
+export default input => validate(input, schema, ERROR_MAP);
