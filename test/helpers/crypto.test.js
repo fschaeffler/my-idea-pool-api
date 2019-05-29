@@ -9,39 +9,33 @@ import {
 describe('helpers/crypto', function() {
     const password = 'test-Passw0rd';
 
-    describe('randomUid', function() {
-        it('should create unique uids', function() {
-            assert.notEqual(randomUid(), randomUid());
-        });
-
-        it('should respect the defined length', function() {
-            assert.equal(randomUid(13).length, 13);
-        });
+    it('should create unique random uids', function() {
+        assert.notEqual(randomUid(), randomUid());
     });
 
-    describe('getPasswordHash', function() {
-        it('should create deterministic password hashes', function() {
-            assert.equal(getPasswordHash(password), getPasswordHash(password));
-        });
-
-        it('should respect the defined APP_SECRET', function() {
-            const currentAppSecret = process.env.APP_SECRET;
-            const currentAppSecretPasswordHash = getPasswordHash(password);
-
-            process.env.APP_SECRET = 'test-app-secret';
-            const passwordHash = getPasswordHash(password);
-            process.env.APP_SECRET = currentAppSecret;
-
-            assert.notEqual(currentAppSecretPasswordHash, passwordHash);
-        });
+    it('should respect the defined random uid length', function() {
+        assert.equal(randomUid(13).length, 13);
     });
 
-    describe('isPasswordMatch', function() {
-        it('should match password and password hash', function() {
-            assert.equal(
-                isPasswordMatch(password, getPasswordHash(password)),
-                true
-            );
-        });
+    it('should create deterministic password hashes', function() {
+        assert.equal(getPasswordHash(password), getPasswordHash(password));
+    });
+
+    it('should respect the defined APP_SECRET when creating password hashes', function() {
+        const currentAppSecret = process.env.APP_SECRET;
+        const currentAppSecretPasswordHash = getPasswordHash(password);
+
+        process.env.APP_SECRET = 'test-app-secret';
+        const passwordHash = getPasswordHash(password);
+        process.env.APP_SECRET = currentAppSecret;
+
+        assert.notEqual(currentAppSecretPasswordHash, passwordHash);
+    });
+
+    it('should match password and password hash', function() {
+        assert.equal(
+            isPasswordMatch(password, getPasswordHash(password)),
+            true
+        );
     });
 });

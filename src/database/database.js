@@ -64,4 +64,8 @@ const database = async () => {
     /* eslint-enable no-console */
 };
 
+export const reset = () => {
+    sequelize = null;
+};
+
 export default database;
