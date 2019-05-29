@@ -8,11 +8,12 @@ export default async (event, context, exec, rethrowError) => {
         /* eslint-disable-next-line no-param-reassign */
         context.callbackWaitsForEmptyEventLoop = false;
 
+        await database();
+
         if (event && event.source === WARMUP_EVENT_SOURCE) {
             return WARMUP_EVENT_SOURCE;
         }
 
-        await database();
         const result = await exec();
 
         return result;
