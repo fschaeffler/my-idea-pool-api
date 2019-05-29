@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "CodementorX Small Project - Back End",
   "scripts": {
-    "dep-graph": "npx madge --image docu/dependency-graph.png src/**/*.js",
+    "dep-graph": "npx madge --image docu/dependency-graph.png --exclude test/*.js --exclude tools/*.js src/**/*.js",
     "deploy:dev": "sls deploy --stage dev",
     "deploy:test": "sls deploy --stage test",
     "deploy:production": "sls deploy --stage production",
