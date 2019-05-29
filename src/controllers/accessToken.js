@@ -11,6 +11,12 @@ import {
 } from '../repositories/accessToken';
 
 export const loginAccessToken = async event => {
+    if (!event || !event.body) {
+        return {
+            statusCode: STATUS_CODES.UNAUTHORIZED
+        };
+    }
+
     const data = JSON.parse(event.body);
 
     const passwordHash = getPasswordHash(data.password);
