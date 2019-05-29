@@ -1,8 +1,13 @@
 import assert from 'assert';
+import sinon from 'sinon';
 import { describe } from 'mocha';
+import { AccessToken } from '../../src/models/accessToken';
 import { create, remove, list, update } from '../../src/handlers/idea';
+import { createJwtToken } from '../../src/helpers/jwt';
+import { Idea } from '../../src/models/idea';
 import { signup } from '../../src/handlers/user';
 import { STATUS_CODES, ERROR_CODES } from '../../src/constants/response';
+import { User } from '../../src/models/user';
 
 describe('handlers/idea', function() {
     const validIdeaData = {
@@ -121,5 +126,78 @@ describe('handlers/idea', function() {
 
         const parsedBodyInvalidData = JSON.parse(responseInvalidData.body);
         assert.equal(parsedBodyInvalidData.error, ERROR_CODES.IDEA_IMPACT);
+    });
+
+    it('should give a proper response on a failed update', async function() {
+        const responseEmptyBody = await update(null, {});
+        assert.equal(responseEmptyBody.statusCode, STATUS_CODES.BAD_PARAMETERS);
+
+        const user = await User.create({
+            email: 'idea-update@test.com',
+            name: 'Test User',
+            passwordHash: 'fake-password-hash',
+            avatarUrl: 'https://www.test.com/test.png'
+        });
+
+        const idea = await Idea.create({
+            ...validIdeaData,
+            userId: user.id,
+            averageScore: 7.5
+        });
+
+        const { jwt } = createJwtToken({ userId: user.id });
+
+        sinon.stub(Idea, 'update');
+
+        const responseValidData = await update(
+            {
+                headers: {
+                    'x-access-token': jwt
+                },
+                pathParameters: { id: 1 },
+                body: JSON.stringify({ validIdeaData })
+            },
+            {}
+        );
+
+        sinon.restore();
+
+        assert.equal(responseValidData.statusCode, STATUS_CODES.BAD_PARAMETERS);
+    });
+
+    it('should give a proper response on a successful update', async function() {
+        const responseEmptyBody = await update(null, {});
+        assert.equal(responseEmptyBody.statusCode, STATUS_CODES.BAD_PARAMETERS);
+
+        const user = await User.create({
+            email: 'idea-update-success@test.com',
+            name: 'Test User',
+            passwordHash: 'fake-password-hash',
+            avatarUrl: 'https://www.test.com/test.png'
+        });
+
+        const { jwt } = createJwtToken({ userId: user.id });
+
+        const idea = await Idea.create({
+            ...validIdeaData,
+            userId: user.id,
+            averageScore: 7.5
+        });
+
+        const responseValidData = await update(
+            {
+                headers: {
+                    'x-access-token': jwt
+                },
+                pathParameters: { id: idea.id },
+                body: JSON.stringify({
+                    ...validIdeaData,
+                    ease: 10
+                })
+            },
+            {}
+        );
+
+        assert.equal(responseValidData.statusCode, STATUS_CODES.CREATED);
     });
 });

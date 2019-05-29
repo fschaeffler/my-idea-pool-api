@@ -82,12 +82,18 @@
     }
   },
   "lint-staged": {
-    "**/*.js": [
+    "src/**/*.js": [
       "npx prettier --write",
       "npx yarn retire -n -j",
       "npx yarn lint --fix",
       "yarn dep-graph",
       "git add docu/dependency-graph.*",
+      "git add"
+    ],
+    "**/*.js": [
+      "npx prettier --write",
+      "npx yarn retire -n -j",
+      "npx yarn lint --fix",
       "git add"
     ],
     "**/*.md": [
