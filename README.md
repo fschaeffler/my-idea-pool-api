@@ -1,5 +1,7 @@
 # My Idea Pool API
 
+A backend API for a web-application which contains ideas sorted by an applied rating.
+
 <p align="center">
   <img src="docu/dependency-graph.png" alt="Dependency Graph" width="100%" />
   <b style="font-size: 0.5em;">Dependency Graph</b>
@@ -53,9 +55,9 @@ The tests can get run via `yarn test`.
 
 ## Improvements
 
-### Test Framework (qm-quiz Test API)
+### Exisiting Test Framework
 
--   When expecting a decimal value like e.g. `1.0`, only accept the value `1` without the decimals as a returned result. The reason for this is that otherwise, the created stringified JSON isn't standard-compliant anymore. The behavior of enforcing unneeded decimals in responses can get enabled/disabled via the settings-flag `ENFORCE_DECIMALS` in `.env/env.yml`. By default, this behavior is disabled, but will create results, which are slightly different to what the qm-quiz Test API produces.
+-   When expecting a decimal value like e.g. `1.0`, only accept the value `1` without the decimals as a returned result. The reason for this is that otherwise, the created stringified JSON isn't standard-compliant anymore. The behavior of enforcing unneeded decimals in responses can get enabled/disabled via the settings-flag `ENFORCE_DECIMALS` in `.env/env.yml`. By default, this behavior is disabled, but will create results, which are slightly different to what the Test API produces.
 
 ### Performance
 
