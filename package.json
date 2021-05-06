@@ -74,7 +74,7 @@
     "serverless-pseudo-parameters": "^2.4.0",
     "source-map-support": "^0.5.13",
     "sqlite3": "^4.1.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   },
   "husky": {
     "hooks": {
